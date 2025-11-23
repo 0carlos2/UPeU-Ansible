@@ -16,3 +16,18 @@
   roles:
     - windows_fileserver
     - windows_ad_dc
+
+- name: "Fase 3: Configurar Clientes Windows (10/11)"
+  hosts: windows_clients
+  roles:
+    - win_client_apps
+    - win_client_users
+    - win_client_security
+
+- name: "Fase 4: Configurar Clientes macOS (Mojave+)"
+  hosts: macos_clients
+  become: yes
+  roles:
+    - macos_apps
+    - macos_users
+    - macos_security

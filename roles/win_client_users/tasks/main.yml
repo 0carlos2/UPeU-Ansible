@@ -1,0 +1,9 @@
+---
+- name: "WIN USERS | Crear usuarios locales"
+  ansible.windows.win_user:
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    state: "{{ item.state }}"
+    groups: "{{ item.groups }}"
+    password_never_expires: yes
+  loop: "{{ win_users_list }}"

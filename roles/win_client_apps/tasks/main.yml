@@ -1,0 +1,11 @@
+---
+- name: "WIN APPS | Instalar Chocolatey (Gestor de paquetes)"
+  win_chocolatey:
+    name: chocolatey
+    state: present
+
+- name: "WIN APPS | Instalar aplicaciones base"
+  win_chocolatey:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ win_apps_list }}"

@@ -1,0 +1,12 @@
+---
+- name: "MAC APPS | Asegurar que Homebrew esté instalado"
+  community.general.homebrew:
+    name: git
+    state: present
+  ignore_errors: yes
+
+- name: "MAC APPS | Instalar aplicaciones Cask (GUI)"
+  community.general.homebrew_cask:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ macos_apps_list }}"

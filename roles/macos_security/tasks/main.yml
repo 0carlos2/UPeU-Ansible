@@ -1,0 +1,10 @@
+---
+- name: "MAC SEC | Habilitar el Firewall de Aplicación (ALF)"
+  ansible.builtin.command: /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+  become: yes
+  register: firewall_result
+  changed_when: "'already on' not in firewall_result.output"
+
+- name: "MAC SEC | Habilitar modo Stealth (no responder ICMP)"
+  ansible.builtin.command: /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
+  become: yes

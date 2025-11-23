@@ -1,0 +1,9 @@
+---
+- name: "MAC USERS | Crear usuario estudiante"
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    comment: "{{ item.fullname }}"
+    shell: /bin/zsh 
+    home: "/Users/{{ item.name }}"
+  loop: "{{ macos_users_list }}"
+  become: yes
