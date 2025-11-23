@@ -28,6 +28,6 @@
   hosts: macos_clients
   become: yes
   roles:
-    - macos_apps
+    #- macos_apps
     - macos_users
     - macos_security
