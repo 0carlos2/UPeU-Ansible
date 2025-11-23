@@ -1,0 +1,18 @@
+---
+# tasks file for roles/windows_fileserver
+- name: "FILESERVER | Instalar el rol de Servidor de Archivos"
+  ansible.windows.win_feature:
+    name: File-Services
+    state: present
+
+- name: "FILESERVER | Asegurar que el directorio base exista"
+  ansible.windows.win_file:
+    path: "{{ fileshare_path }}"
+    state: directory
+
+- name: "FILESERVER | Crear el recurso compartido"
+  ansible.windows.win_share:
+    name: "{{ fileshare_name }}"
+    path: "{{ fileshare_path }}"
+    full_access: 'Authenticated Users'
+    state: present

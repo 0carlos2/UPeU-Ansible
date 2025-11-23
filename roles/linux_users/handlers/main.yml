@@ -1,0 +1,9 @@
+---
+# handlers file for roles/linux_users
+- name: "Validar sudoers"
+  ansible.builtin.command: "visudo -cf %s"
+  args:
+    stdin: "{{ content }}"
+  vars:
+    content: |
+      %wheel ALL=(ALL) NOPASSWD: ALL

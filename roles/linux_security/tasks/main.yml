@@ -1,0 +1,53 @@
+---
+# tasks file for roles/linux_security
+- name: "SECURITY | Instalar paquetes de firewall (ufw, fail2ban)"
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop: "{{ security_packages }}"
+  notify: "Reiniciar fail2ban"
+
+- name: "SECURITY | Configurar jail de Fail2Ban para SSH"
+  ansible.builtin.template:
+    src: jail.local.j2
+    dest: /etc/fail2ban/jail.local
+  notify: "Reiniciar fail2ban" 
+
+- name: "SECURITY | Habilitar y iniciar servicios de seguridad"
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - ufw       
+    - fail2ban
+
+- name: "SECURITY | Permitir tráfico SSH (UFW)"
+  community.general.ufw:
+    rule: allow
+    port: '22'
+    proto: tcp
+  notify: "Recargar UFW"
+
+- name: "SECURITY | Permitir tráfico HTTP (UFW)"
+  community.general.ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+  notify: "Recargar UFW"
+
+# --- TAREAS DE ENDURECIMIENTO DE SSH ---
+- name: "SECURITY | Endurecer SSH: Deshabilitar login de Root"
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PermitRootLogin"
+    line: "PermitRootLogin no"
+  notify: "Reiniciar sshd"
+
+- name: "SECURITY | Endurecer SSH: Deshabilitar login con contraseña"
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PasswordAuthentication"
+    line: "PasswordAuthentication no"
+  notify: "Reiniciar sshd"

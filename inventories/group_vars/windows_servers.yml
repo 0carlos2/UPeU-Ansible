@@ -1,0 +1,13 @@
+ansible_password: "{{ win_admin_password }}"
+
+ansible_connection: winrm
+ansible_winrm_server_cert_validation: ignore
+ansible_winrm_transport: ntlm
+
+ansible_become: false
+
+#Variables para el rol windows_fileserver
+fileshare_name: "Lab_Academico"
+fileshare_path: "C:\\Shares\\Lab_Academico"
+
+

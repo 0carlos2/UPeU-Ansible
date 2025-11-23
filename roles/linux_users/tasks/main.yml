@@ -1,0 +1,30 @@
+---
+# tasks file for roles/linux_users
+- name: "USERS | Crear grupos del laboratorio (profesores, estudiantes)"
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "wheel"
+    - "profesores"
+    - "estudiantes"
+
+- name: "USERS | Crear perfiles de usuario (profesor y estudiante)"
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    comment: "{{ item.comment }}"
+    groups: "{{ item.groups }}"
+    append: yes
+    shell: /bin/bash
+    create_home: yes
+    password: "{{ lookup('vars', 'lab_user_passwords')['item.vault_pass_var'] }}"
+  loop: "{{ academic_users }}"
+
+- name: "USERS | Configurar política de Sudo para profesores"
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/90-profesores
+    mode: '0440'
+    content: |
+      %wheel ALL=(ALL) NOPASSWD: ALL
+
+  notify: Validar sudoers

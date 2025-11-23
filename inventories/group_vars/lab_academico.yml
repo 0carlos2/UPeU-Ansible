@@ -1,0 +1,40 @@
+# Variables para todas las máquinas en [lab_academico]
+
+# Paquetes para el rol: common
+common_packages:
+  - htop
+  - git
+
+# Paquetes para el rol: linux_apps
+academic_packages:
+  - libreoffice
+  - libreoffice-l10n-es
+  - firefox
+
+# Paquetes para el rol: linux_security
+security_packages:
+  - ufw
+  - fail2ban
+
+# Paquetes para el rol: linux_ad_join
+ad_packages:
+  - realmd
+  - sssd-ad
+  - sssd-tools
+  - krb5-user
+  - adcli
+
+# Lista de perfiles de usuario para el rol linux_users
+academic_users:
+  - name: "profesor"
+    comment: "Usuario Administrador del Laboratorio"
+    groups: "wheel,profesores"
+    vault_pass_var: "profesor" 
+  
+  - name: "estudiante"
+    comment: "Usuario Estándar del Laboratorio"
+    groups: "estudiantes"
+    vault_pass_var: "estudiante" 
+
+# IP del servidor DNS principal (tu Windows Server)
+primary_dns_server: "172.26.99.234"

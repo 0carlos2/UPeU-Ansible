@@ -1,0 +1,18 @@
+- name: "Fase 1: Configurar Laboratorio Académico (Linux Mint)"
+  hosts: lab_academico
+  become: yes
+  
+  roles:
+    - common
+    - linux_network
+    - linux_apps
+    - linux_security
+    - linux_users
+    - linux_ad_join 
+
+- name: "Fase 2: Configurar Servidores Windows"
+  hosts: windows_servers
+  
+  roles:
+    - windows_fileserver
+    - windows_ad_dc

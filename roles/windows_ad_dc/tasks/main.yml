@@ -1,0 +1,28 @@
+---
+# tasks file for roles/windows_ad_dc
+- name: "AD_DC | Instalar el rol de Active Directory"
+  ansible.windows.win_feature:
+    name: AD-Domain-Services
+    state: present
+  register: ad_role_install
+
+- name: "AD_DC | Instalar el rol de Servidor DNS"
+  ansible.windows.win_feature:
+    name: DNS
+    state: present
+  register: dns_role_install
+
+- name: "AD_DC | Reiniciar la maquina (si es necesario)"
+  ansible.windows.win_reboot:
+  when: ad_role_install.reboot_required or dns_role_install.changed
+
+- name: "AD_DC | Configurar DNS local para la validación de AD"
+  ansible.windows.win_powershell:
+    script: |
+      $adapter = Get-NetAdapter | Where-Object { $.Status -eq 'Up' -and $.MediaType -eq '802.3' } | Select-Object -First 1
+      if ($adapter) {
+        Set-DnsClientServerAddress -InterfaceAlias $adapter.Name -ServerAddresses "127.0.0.1"
+      } else {
+        Write-Error "No se pudo encontrar un adaptador de red principal activo."
+      }
+  changed_when: true

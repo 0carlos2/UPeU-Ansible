@@ -1,0 +1,6 @@
+---
+# handlers file for roles/linux_network
+- name: "Reiniciar systemd-resolved"
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: restarted

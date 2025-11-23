@@ -1,0 +1,16 @@
+---
+# tasks file for roles/linux_ad_join
+- name: "AD | Instalar paquetes de integración con AD"
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop: "{{ ad_packages }}"
+
+  
+- name: "AD | Unir la maquina al dominio 'laboratorios.local'"
+  community.general.realm:
+    name: laboratorios.local
+    state: joined
+    user: "{{ domain_join_user }}"
+    password: "{{ domain_join_pass }}"

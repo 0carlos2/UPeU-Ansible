@@ -1,0 +1,21 @@
+---
+# tasks file for roles/linux_network
+- name: "NETWORK | Configurar DNS principal en systemd-resolved"
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    regexp: "^#?DNS="
+    line: "DNS={{ primary_dns_server }}"
+  notify: "Reiniciar systemd-resolved"
+
+- name: "NETWORK | Configurar dominio de búsqueda"
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    regexp: "^#?Domains="
+    line: "Domains=laboratorios.local"
+  notify: "Reiniciar systemd-resolved"
+
+- name: "NETWORK | Habilitar y arrancar systemd-resolved"
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: started
+    enabled: yes

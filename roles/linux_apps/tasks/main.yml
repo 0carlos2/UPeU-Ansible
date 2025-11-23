@@ -1,0 +1,9 @@
+---
+# tasks file for roles/linux_web
+- name: "APPS | Instalar software académico (Office, Web)"
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop: "{{ academic_packages }}"
+  

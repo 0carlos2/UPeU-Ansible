@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina de Ansible</title>
+</head>
+<body>
+    <h1>¡Configurado con Ansible!</h1>
+    <p>Este laboratorio académico fue automatizado.</p>
+
+    <hr>
+    <h2>Información del Sistema (dinámica):</h2>
+    <ul>
+        <li><strong>Hostname del Servidor:</strong> {{ ansible_hostname }}</li>
+        <li><strong>Sistema Operativo:</strong> {{ ansible_distribution }} {{ ansible_distribution_version }}</li>
+        <li><strong>IP Principal:</strong> {{ ansible_default_ipv4.address }}</li>
+    </ul>
+</body>
+</html>
