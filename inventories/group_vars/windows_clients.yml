@@ -1,0 +1,17 @@
+ansible_connection: winrm
+ansible_winrm_server_cert_validation: ignore
+ansible_winrm_transport: ntlm
+ansible_port: 5985
+
+# Apps a instalar (usando Chocolatey para facilitar la vida)
+win_apps_list:
+  - googlechrome
+  - 7zip
+  - vlc
+
+# Usuarios a crear
+win_users_list:
+  - name: "Estudiante_Win"
+    password: "Password123!"
+    state: present
+    groups: "Users"
