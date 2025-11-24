@@ -3,7 +3,7 @@
   ansible.builtin.command: /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
   become: yes
   register: firewall_result
-  changed_when: "'already on' not in firewall_result.output"
+  changed_when: "'already on' not in firewall_result.stdout"
 
 - name: "MAC SEC | Habilitar modo Stealth (no responder ICMP)"
   ansible.builtin.command: /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
